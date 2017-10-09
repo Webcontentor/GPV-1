@@ -203,6 +203,7 @@
   New Style for Search Panel 
   Date 12-09-2017
 */
+/* Search details panel */
 .topLftTxt{
     font-size: 15px;
     position: relative;
@@ -240,3 +241,4 @@
     min-height: auto;
 }
 /* ends here */
+

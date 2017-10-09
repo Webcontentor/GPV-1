@@ -188,6 +188,7 @@ label#labMarkupLock {
 /**
 New Style for Markup Panel
 */
+/* Draw details panel */
 .frmBg_box{
     width: 100%;
     float: left;
@@ -302,7 +303,7 @@ New Style for Markup Panel
 }
 #chkTextGlow{
     position: relative;
-    left: -3px;
+    left: 1px;
     top: 4px;
 }
 .list_headng .divMargin{
@@ -326,10 +327,15 @@ New Style for Markup Panel
 }
 .btnControlLock{
     pointer-events: none;
-    background-color: #ebebe4;
+    background-color: #cacac9;
 }
-.markup .tabMrkp{
-    height: calc(100vh - 584px);
+#tblMarkupTitle{
+    background-color: #cacac9;
+    color: #000;    
+}
+.markup .tabMrkp {
+    /*height: calc(100vh - 584px);*/
+    height: initial;
 }
 .drawCntWrap{
     float: left;
