@@ -511,6 +511,10 @@ label{
 .right_details .topHead{
     background-color: #172936;
 }
+.right_details .dtlPara{
+    position: relative;
+    top: -5px;
+}
 /* ends here */
 
 /* common styles */
@@ -545,6 +549,7 @@ label{
 #tabMobDetails{
     display: none!important;
 }
+
 #pnlData{
     background-color: #182a36;
     /*border: 1px solid #526870;*/
@@ -554,6 +559,7 @@ label{
 #pnlData .frm_box{
     padding: 10px 0px;
 }
+
 /* ends here */
 
 /* Dropdown select menu styles */
