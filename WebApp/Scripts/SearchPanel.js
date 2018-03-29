@@ -34,7 +34,6 @@ var GPV = (function (gpv) {
     $(".Date,.DateRange").dateInput().datepicker({ showAnim: "slideDown", changeMonth: true, changeYear: true });
     $(".SearchInputField:has(select)").addClass('customSearch');
 
-
     var $grdSearch = $("#grdSearch").dataGrid({
       multiSelect: true,
       rowClass: "DataGridRow",
@@ -71,13 +70,13 @@ var GPV = (function (gpv) {
     // =====  private functions  =====
 
     function emptyResultGrid() {
+      $labSearchCount.text("None found");
       $grdSearch.dataGrid("empty");
       $cmdShowOnMap.addClass("Disabled");
       $cmdShowAllOnMap.addClass("Disabled");
     }
 
     function fillSearches() {
-
       var changed = gpv.loadOptions($ddlSearch, config.mapTab[appState.MapTab].search);
 
       if (changed) {
@@ -92,8 +91,10 @@ var GPV = (function (gpv) {
         }
       });
     }
-   
+
     function getSearchResults() {
+      $labSearchCount.text("searching...");
+
       gpv.post({
         url: service,
         data: {
@@ -150,9 +151,9 @@ var GPV = (function (gpv) {
       if (!$cmdReset.hasClass("Disabled")) {
         $("#pnlSearchScroll").find("input:text").val('');
         $("#pnlSearchScroll").find("select").prop('selectedIndex', 0);
+        $labSearchCount.text("None found");
         $cmdSearch.toggleClass("Disabled");
         $cmdReset.toggleClass("Disabled");
-        $labSearchCount.text("None Found");
         emptyResultGrid();
       }
     }

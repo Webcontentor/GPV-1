@@ -15,20 +15,24 @@
 var GPV = (function (gpv) {
   $(function () {
     var appState = gpv.appState;
+
     var fullExtent = L.Bounds.fromArray(gpv.configuration.fullExtent);
     var tileLayers = {};
     var resizeHandle;
     var redrawPost;
+
     var $mapOverview = $("#mapOverview");
     var $locatorBox = $("#locatorBox");
     var overviewMapHeight = null;
     var overviewMapWidth = null;
     var locatorPanning = false;
     var overviewExtent;
+
     var mapTabChangedHandlers = [];
     var functionTabChangedHandlers = [];
     var extentChangedHandlers = [];
     var mapRefreshedHandlers = [];
+
     var panelAnimationTime = 0;
 
     // =====  controls required prior to map control creation  =====
@@ -39,15 +43,19 @@ var GPV = (function (gpv) {
 
     var maxZoom = gpv.settings.zoomLevels - 1;
     var crs = L.CRS.EPSG3857;
+
     if (gpv.settings.mapCrs) {
       crs = new L.Proj.CRS("GPV:1", gpv.settings.mapCrs);
       var c = crs.unproject(fullExtent.getCenter());
       var sf = 2 / L.CRS.EPSG3857.scaleFactorAtLatitude(c.lat);
+
       var isFeet = gpv.settings.mapCrs.indexOf("+to_meter=0.3048") >= 0;
-      var resolutions = [(isFeet ? 513591 : 156543) * sf];
+      var resolutions = [ (isFeet ? 513591 : 156543) * sf ];
+
       for (var i = 0; i < maxZoom; ++i) {
         resolutions.push(resolutions[i] * 0.5);
       }
+
       crs = new L.Proj.CRS("GPV:1", gpv.settings.mapCrs, {
         resolutions: resolutions
       });
@@ -82,6 +90,7 @@ var GPV = (function (gpv) {
     }).on("shingleload", function () {
       gpv.progress.clear();
       updateOverviewExtent();
+
       $.each(mapRefreshedHandlers, function () {
         this();
       });
@@ -122,15 +131,13 @@ var GPV = (function (gpv) {
 
     map.addControl(new fullViewTool())
     .addControl(new locationTool());
+
     gpv.mapTip.setMap(map);
     gpv.selectionPanel.setMap(map);
     gpv.markupPanel.setMap(map);
     gpv.sharePanel.setMap(map);
 
-    //On Init set DefaultFunction Tab
     if (appState.ActiveFunctionTab != 0) {
-    
-      
       if ($(window).width() < 700) {
         $("#pnlFunctionTabs").animate({ left: 0, opacity: "1.0" }, 600);
         $("#pnlFunction").animate({ left: "50px", opacity: "1.0" }, 600);
@@ -143,14 +150,10 @@ var GPV = (function (gpv) {
         $("#pnlFunction").animate({ left: "161px", opacity: "1.0" }, 600);
         $('.leaflet-control').css('margin-left', '3px');
         $("#pnlMapMenus").addClass("pnlMapMenus_option");
-        $("#logo").addClass("pnlMapMenus_option");
         $('#mapMain .leaflet-control-container .leaflet-top').addClass('pnlMapMenus_option');
-      
       }
-     
     }
     
-
     // =====  control events  =====
 
     $(window).on("resize", function () {
@@ -198,11 +201,12 @@ var GPV = (function (gpv) {
       $lnkEmail.prop("selectionStart", 0).prop("selectionEnd", $lnkEmail.val().length);
     }
 
-    $("#cmdFullView").on("click", function () {
+    $("#cmdFullView").on("click", function (event) {
       zoomToFullExtent();
+      event.stopPropagation();
     });
 
-    $("#cmdLocation").on("click", function () {
+    $("#cmdLocation").on("click", function (event) {
       if (navigator && navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (pos) {
           var latlng = L.latLng(pos.coords.latitude, pos.coords.longitude);
@@ -210,26 +214,22 @@ var GPV = (function (gpv) {
         }, showGpsError);
       }
       else {
-        showGpsError();
-      }
+        showGpsError();      
+      } event.stopPropagation();
     }).popover({
       content: 'GPS is not enabled on this device',
       delay: { show: 500, hide: 500 },
       placement: 'right',
       trigger: 'manual'
     });
-
-    
-
-    //  ==== fort detail panel display ( in large device) ====
+  
     $("#cmdShowDetails").on("click", function () {
-      var myw = $pnlDataDisplay.css("right").substring(0, 1);
       if ($pnlDataDisplay.css("right").substring(0, 1) === "-") {
         $pnlDataDisplay.show();
         $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
           $(".DataExit").addClass("DataExitOpen");
         });
-        $("#pnlOverview").animate({ right: 290 }, 600);   // shift pnlOverview when detail panel show
+        $("#pnlOverview").animate({ right: 290 }, 600);
         $("div.leaflet-control-attribution.leaflet-control").animate({ right: 322 }, 600);
       }
       else {
@@ -241,7 +241,6 @@ var GPV = (function (gpv) {
       zoomToSelection(1.2);
     });
 
-    // ==== detail panel hide ( in large device) ====
     $(".DataHeader").on("click", function () {
       var width = "-" + $pnlDataDisplay.css("width");
       $pnlDataDisplay.animate({ right: width, opacity: "0" }, 800, function () {
@@ -281,8 +280,7 @@ var GPV = (function (gpv) {
       }
     });
 
-    // optSelect click event
-    $("#optSelect").on("click", function () {
+    var $optSelect = $("#optSelect").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle', style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
       HidePanel();
       $(".Menu li").removeClass("active");
@@ -292,52 +290,36 @@ var GPV = (function (gpv) {
         this("Selection");
       });
     });
-    //If optSelect has Select Class
-    var $optSelect = $('#optSelect');
+
     if ($optSelect.hasClass('Selected')) {
-      gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle', style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
-      HidePanel();
-      $(".Menu li").removeClass("active");
-      $("#tabSelection").addClass("active");
-      showFunctionPanel("Selection");   // open selection panel when Select selected in Maptool
-      $.each(functionTabChangedHandlers, function () {
-        this("Selection");
-      });
+      $optSelect.click();
     };
 
     //If optMarkupTool has Select Class
-    var $optMarkupTool = $("#optMarkupTool");
+    var $optMarkupTool = $("#optMarkupTool").on("click", function () {
+      $(".Menu li").removeClass("active");
+      $("#tabMarkup").addClass("active");
+      HidePanel();
+      showFunctionPanel("Markup");
+      $.each(functionTabChangedHandlers, function () {
+        this("Markup");
+      });
+    });
+
     if ($optMarkupTool.hasClass('Selected')) {
-      $(".Menu li").removeClass("active");
-      $("#tabMarkup").addClass("active");
-      HidePanel();
-      showFunctionPanel("Markup");
-      $.each(functionTabChangedHandlers, function () {
-        this("Markup");
-      });
+      $optMarkupTool.click();
     }
-    //optMarkupTool Click event
- $("#optMarkupTool").on("click", function () {
-      $(".Menu li").removeClass("active");
-      $("#tabMarkup").addClass("active");
-      HidePanel();
-      showFunctionPanel("Markup");
-      $.each(functionTabChangedHandlers, function () {
-        this("Markup");
-      });
+    
+    var $optIdentify = $("#optIdentify").on("click", function () {
+      gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
     });
-    // if optIdentify Has Select Class
-    var $optIdentify = $("#optIdentify");
+
     if ($optIdentify.hasClass("Selected")) {
-      gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
-      $optIdentify.addClass("Selected");
+      $optIdentify.click();
     }
-    // optIdentify Click event
-    $optIdentify.on("click", function () {
-      gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
-    });
+
     $("#selectMapTheme li").click(function () {
-      $("#ucLegendPanel_selectedTheme").html($(this).html());
+      $("#selectedTheme").html($(this).html());
       var mapTab = $(this).attr("data-maptab");
       appState.update({ MapTab: mapTab });
       triggerMapTabChanged();
@@ -359,13 +341,8 @@ var GPV = (function (gpv) {
       }
     });
 
-    // ==== cusror type selection when Identify select in MapTool ====
     var $MapTool = $(".MapTool");
 
-
-    $("#optPan").on("click", function () {
-      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: 'off' } });
-    });
 
     // =====  component events  =====
 
@@ -383,23 +360,23 @@ var GPV = (function (gpv) {
     function createTileLayers() {
       Object.keys(gpv.configuration.mapTab).forEach(function (m) {
         tileLayers[m] = {};
+
         gpv.configuration.mapTab[m].tileGroup.forEach(function (tg) {
           var z = -1;
+
           tileLayers[m][tg.group.id] = tg.group.tileLayer.map(function (tl) {
             z += 1;
+
             return L.tileLayer(tl.url, {
               zIndex: tl.overlay ? 200 + z : z,
               attribution: tl.attribution,
               opacity: tg.opacity,
               maxZoom: tl.maxZoom || map.options.maxZoom
             });
-
           });
-
         });
       });
     }
-
 
     function drawTileLayers() {
       map.eachLayer(function (layer) {
@@ -409,7 +386,6 @@ var GPV = (function (gpv) {
       });
 
       var mapTab = appState.MapTab;
-
       var visible = gpv.baselayer.getVisibleTiles(mapTab);
 
       Object.keys(tileLayers[mapTab]).forEach(function (tg) {
@@ -607,8 +583,10 @@ var GPV = (function (gpv) {
     function identify(e) {
       if ($MapTool.filter(".Selected").attr("id") === "optIdentify") {
         var visibleLayers = gpv.legendPanel.getVisibleLayers(appState.MapTab);
+
         if (visibleLayers.length) {
           var p = map.options.crs.project(e.latlng);
+
           $.ajax({
             url: "Services/MapIdentify.ashx",
             data: {
@@ -658,6 +636,7 @@ var GPV = (function (gpv) {
 
               if ($(window).width() > 700){
                 var $pnlDataDisplay = $("#pnlDataDisplay");
+
                 $pnlDataDisplay.show();
                 $pnlDataDisplay.find("#spnDataTheme").text("Identify");
                 $pnlDataDisplay.find("#ddlDataTheme").hide();
@@ -691,8 +670,10 @@ var GPV = (function (gpv) {
       var extent = appState.Extent;
       var same = sameBox(extent.bbox, bbox);
       extent.bbox = bbox;
+
       var layers = appState.VisibleLayers;
       layers[appState.MapTab] = gpv.legendPanel.getVisibleLayers(appState.MapTab);
+
       appState.update({
         Extent: extent,
         VisibleLayers: layers
@@ -709,6 +690,7 @@ var GPV = (function (gpv) {
       }
 
       gpv.progress.start();
+
       redrawPost = gpv.post({
         url: "Services/MapImage.ashx",
         data: {
@@ -749,20 +731,14 @@ var GPV = (function (gpv) {
     }
 
     function toggleTileGroup(groupId, visible) {
-      if (groupId === 'None') {
-        //map.removeLayer(tl);
-      } else {
-        tileLayers[appState.MapTab][groupId].forEach(function (tl) {
-          if (visible) {
-            //map.removeLayer(tl);
-            tl.addTo(map);
-          }
-          else {
-            map.removeLayer(tl);
-          }
-        });
-
-      }
+      tileLayers[appState.MapTab][groupId].forEach(function (tl) {
+        if (visible) {
+          tl.addTo(map);
+        }
+        else {
+          map.removeLayer(tl);
+        }
+      });
     }
 
     function triggerMapTabChanged() {
@@ -812,10 +788,13 @@ var GPV = (function (gpv) {
       if (locatorPanning) {
         panLocatorBox(e);
         locatorPanning = false;
+
         var x = e.pageX - $mapOverview.offset().left;
         var y = e.pageY - $mapOverview.offset().top;
+
         x = (x * overviewExtent.getSize().x / $mapOverview.width()) + overviewExtent.min.x;
         y = overviewExtent.max.y - (y * overviewExtent.getSize().y / $mapOverview.height());
+
         map.panTo(map.options.crs.unproject(L.point(x, y)));
       }
     });
@@ -858,12 +837,14 @@ var GPV = (function (gpv) {
       }
 
       var extent = map.getProjectedBounds();
+
       var left = toScreenX(extent.min.x);
       var top = toScreenY(extent.max.y);
       var right = toScreenX(extent.max.x);
       var bottom = toScreenY(extent.min.y);
       var width = $mapOverview.width();
       var height = $mapOverview.height();
+
       $locatorBox.css({ left: left - 2 + "px", top: top - 2 + "px", width: right - left + "px", height: bottom - top + "px" });
     }
     function ClickIdentity() {
@@ -877,8 +858,6 @@ var GPV = (function (gpv) {
         $("#cmdLocation").popover('hide');
       }, 2000);
     }
-
-
 
     // =====  public interface  =====
 

@@ -1,4 +1,4 @@
-﻿﻿<%-- 
+﻿<%-- 
 Copyright 2012 Applied Geographics, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,7 @@ limitations under the License.
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
 
-<div class="topHead FunctionHeader"> <%--FunctionHeader class for changing Header Background Color and Font color--%>
+<div class="topHead FunctionHeader">
   <div class="inner">
       <span class="topLftTxt ">
         <span class="topTxt">Selection</span>
@@ -65,13 +65,14 @@ limitations under the License.
     <div class="data_box topMargin  customScroll" id="pnlQueryGrid">
       <table id="grdQuery" class="dataTable"></table>
     </div>
-    <div id="pnlQueryCommand topMargin" class="frm_row ">
+    <div id="pnlQueryCommand" class="frm_row topMargin">
       <span id="labSelectionCount" class="floatLeft">None selected</span>
       <button id="cmdMailingLabels" class="Disabled btn frmBtn mailingLblBtn" title="Mailing Labels"><span class="lbl"></span><span class="txt">Mailing Labels</span></button>
       <button id="cmdExportData" class="Disabled btn frmBtn spreadsheetBtn" title="Spreadsheet"><span class="lbl"></span><span class="txt">Spreadsheet</span></button>
     </div>
   </div>
 </div>
+
 <div id="selectionDivider"></div>
 <form id="frmExportData" method="post" target="export">
   <input id="hdnExportLayer" type="hidden" name="layer" />

@@ -1,18 +1,20 @@
 ﻿<%-- 
-Copyright 2016 Applied Geographics, Inc.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+  Copyright 2016 Applied Geographics, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 --%>
 
 <%@ Page Language="C#" AutoEventWireup="true" CodeFile="Viewer.aspx.cs" Inherits="Viewer" EnableViewState="false" EnableSessionState="true" EnableEventValidation="false" %>
-
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 <%@ Register TagPrefix="uc1" TagName="Footer" Src="Footer.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="Header" Src="Header.ascx" %>
@@ -22,7 +24,7 @@ limitations under the License.
 <%@ Register TagPrefix="uc1" TagName="LocationPanel" Src="LocationPanel.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="MarkupPanel" Src="MarkupPanel.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="SharePanel" Src="SharePanel.ascx" %>
-<%@ Register TagPrefix="uc1" TagName="BaseMapPanel" Src="~/BaseMap.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="BaseMapPanel" Src="BaseMap.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="DetailsPanel" Src="DetailsPanel.ascx" %>
 
 <!DOCTYPE html>
@@ -31,11 +33,10 @@ limitations under the License.
 <head id="head" runat="server">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AppGeo GPV</title>
-  <script type="text/javascript"> if (typeof (JSON) == "undefined") { location.href = "Incompatible.htm"; } </script>
+  <script type="text/javascript"> if (typeof(JSON) == "undefined") { location.href = "Incompatible.htm"; } </script>
   <script type="text/javascript" src="Scripts/WebFonts.js"></script>
 </head>
 <body>
-
   <div id="pnlBody" class="container-fluid">
     <div id="pnlHeader" class="Panel">
       <header class="main">
@@ -194,6 +195,7 @@ limitations under the License.
               </ul>
             </div>
           </div>
+
           <div id="pnlOverview" class="overviewInitial">
             <div id="cmdOverview" class="iconWrapper">
               <span id="iconOverview" class="glyphicon glyphicon-triangle-left" title="Show/hide overview map"></span>
@@ -214,6 +216,7 @@ limitations under the License.
           <a id="logo" runat="server" href="http://www.appgeo.com" target="_blank"></a>
         </div>
       </div>
+
       <div id="pnlDataDisplay" class="right_details detailNav">
         <div class="DataHeader topHead">
           <div class="inner">

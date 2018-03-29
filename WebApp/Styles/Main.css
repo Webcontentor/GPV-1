@@ -20,7 +20,7 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 @font-face {
-  font-family: 'openSans-bold';
+  font-family: 'OpenSans-bold';
   src: url('fonts/OpenSans-Bold.eot');
   src: url('fonts/OpenSans-Bold.eot?#iefix') format('embedded-opentype'), url('fonts/OpenSans-Bold.woff') format('woff'), url('fonts/OpenSans-Bold.ttf') format('truetype'), url('fonts/OpenSans-Bold.svg#codropsicons') format('svg');
   font-weight: bold;
@@ -32,68 +32,16 @@
   src: url('fonts/OpenSans-Regular.eot?#iefix') format('embedded-opentype'), url('fonts/OpenSans-Regular.woff') format('woff'), url('fonts/OpenSans-Regular.ttf') format('truetype'), url('fonts/OpenSans-Regular.svg#codropsicons') format('svg');
   font-weight: normal;
 }
-/* ==========================================================================
-   Base styles: opinionated defaults
-   ========================================================================== */
 
-html {
-  color: #fff;
-  font-size: 1em;
-  line-height: 1.4;
-  font-family: sans-serif; /* 1 */
-  -ms-text-size-adjust: 100%; /* 2 */
-  -webkit-text-size-adjust: 100%; /* 2 */
-  overflow: hidden;
-}
-/*
-* Remove default fieldset styles.
-*/
-
-fieldset {
-  border: 0;
-  margin: 0;
-  padding: 0;
-}
-/*
-* Hide visually and from screen readers
-*/
-
-.hidden {
-  display: none !important;
-}
 
 body {
-  margin: 0;
-  padding: 0;
-  color: #fff;
   font-family: 'Open Sans', sans-serif;
   font-size: 13px;
   background-position-y: 50px;
 }
 
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-main,
-menu,
-nav,
-section,
-summary {
-  display: block;
-}
-
-a:active,
-a:hover {
+a:active, a:hover {
   outline: 0;
-}
-
-img {
-  border: 0;
 }
 
 .Panel {
@@ -102,10 +50,23 @@ img {
   top: 0px;
   right: 0px;
   bottom: 0px;
+  color: #fff;
 }
-/* custom styles */
 
-/* header panel styles */
+.hidden { /* hide visually and from screen readers */
+  display: none !important;
+}
+
+.leftCol {
+  float: left;
+}
+
+.rightCol {
+  float: right;
+}
+
+/* =====  header panel  ===== */
+
 header.main {
   width: 100%;
   float: left;
@@ -115,14 +76,6 @@ header.main .inner {
   width: 100%;
   float: left;
   padding: 0 0px;
-}
-
-.leftCol {
-  float: left;
-}
-
-.rightCol {
-  float: right;
 }
 
 header.main ul.rightLinks {
@@ -184,11 +137,11 @@ header.main .logo {
   font-size: 23px;
   background: #367fa9;
   width: 162px;
-  display: none;
+  /*display: none;*/
 }
-/* header section ends here */
 
-/* Left Nav panel styles */
+/* =====  left navigation panel  ===== */
+
 .leftNav_panel.active {
   min-width: auto;
   width: 53px;
@@ -288,7 +241,13 @@ header.main .logo {
   min-height: 20px;
   background-image: url(../Images/UI/all-icons.png);
 }
-/* Adding icons from common file */
+
+.leftNav_panel .leftLinks ul li .linkTxt {
+  display: inline-block;
+}
+
+/* =====  icons from sprite file  ===== */
+
 .searchICN {
   background-position: -11px -9px;
 }
@@ -321,12 +280,7 @@ header.main .logo {
   height: 23px;
 }
 
-
-/* Ends there */
-
-.leftNav_panel .leftLinks ul li .linkTxt {
-  display: inline-block;
-}
+/* =====  top  ===== */
 
 .topSection .hamburger {
   display: inline-block;
@@ -345,15 +299,7 @@ header.main .logo {
   font-size: 20px;
 }
 
-/*.topSection .pinIco {
-  background-image: url(../Images/pin-icon.png);
-  background-repeat: no-repeat;
-  width: 17px;
-  height: 19px;
-  display: none;
-}*/
-
-
+/* =====  help  ===== */
 
 .helpIcon {
   position: relative;
@@ -363,9 +309,13 @@ header.main .logo {
   height: auto;
   cursor: pointer;
 }
+
 .helpIcon i{
   font-size: 20px;
 }
+
+/* =====  details  ===== */
+
 .dtlInfoPopup {
   background-color: #fff;
   width: 220px;
@@ -1350,7 +1300,7 @@ button.dropdown-toggle {
 /* ends here */
 
 /* Maps details panel */
-#ucLegendPanel_selectedTheme {
+#selectedTheme {
   padding-left: 4px;
 }
 

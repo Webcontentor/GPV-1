@@ -77,7 +77,7 @@ public class MarkupPanelHandler : WebServiceHandler
 
     int id = Sequences.NextMarkupGroupId;
     string title = "[untitled]";
-    string details = "[No Details]";
+    string details = "[no details]";
     bool locked = AppAuthentication.Mode != AuthenticationMode.None;
     DateTime now = DateTime.Now;
 
@@ -87,7 +87,7 @@ public class MarkupPanelHandler : WebServiceHandler
     {
       using (OleDbConnection connection = AppContext.GetDatabaseConnection())
       {
-        string sql = String.Format("insert into {0}MarkupGroup (GroupID, CategoryID, DisplayName, CreatedBy, CreatedByUser, Locked, DateCreated, DateLastAccessed, Deleted,Details) values (?, ?, ?, ?, ?, ?, ?, ?, ? ,?)",
+        string sql = String.Format("insert into {0}MarkupGroup (GroupID, CategoryID, DisplayName, CreatedBy, CreatedByUser, Locked, DateCreated, DateLastAccessed, Deleted, Details) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             WebConfigSettings.ConfigurationTablePrefix);
 
         using (OleDbCommand command = new OleDbCommand(sql, connection))

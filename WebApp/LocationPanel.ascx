@@ -1,4 +1,4 @@
-﻿﻿<%-- 
+﻿<%-- 
 Copyright 2012 Applied Geographics, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@ limitations under the License.
 
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="LocationPanel.ascx.cs" Inherits="LocationPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
-<div class="topHead FunctionHeader"> <%--FunctionHeader class for changing Header Background Color and Font color--%>
+<div class="topHead FunctionHeader">
   <div class="inner">
       <span class="topLftTxt ">
         <span class="topTxt">Location</span>

@@ -15,29 +15,34 @@
 var GPV = (function (gpv) {
   $(function () {
     var map, shingleLayer, currentShape;
+
     var $container = $("#pnlMarkup");
     var config = gpv.configuration;
     var appState = gpv.appState;
     var isPublic = gpv.settings.isPublic;
     var service = "Services/MarkupPanel.ashx";
+
     var metersPerFoot = 0.3048333333333333;
     var feetPerMile = 5280;
     var squareFeetPerAcre = 43560;
+
     var measureText;
     var measureCrs = proj4(gpv.settings.measureCrs);
+
     measureCrs.project = function (latlng) {
-      var c = this.forward([latlng.lng, latlng.lat]);
+      var c = this.forward([ latlng.lng, latlng.lat ]);
       return { x: c[0], y: c[1] };
     };
 
     measureCrs.unproject = function (p) {
-      var c = this.inverse([p.x, p.y]);
+      var c = this.inverse([ p.x, p.y ]);
       return L.latLng(c[1], c[0]);
     };
 
     // =====  controls  =====
 
     $("#tboMarkupUser").attr("placeholder", "enter name");
+
     var $colorSelectors = $(".Color").colorSelector({
       selectorClass: "ColorSelector",
       disabledClass: "Disabled",
@@ -47,7 +52,6 @@ var GPV = (function (gpv) {
     var $chkMarkupLock = $("#chkMarkupLock").on("click", lockMarkupGroup);
     var $chkTextGlow = $("#chkTextGlow");
 
-    // ==== this function for disable button after Delete click event ====
     $("#cmdDeleteMarkup").on("click", function () {
       if (!$(this).hasClass("Disabled")) {
         deleteMarkupGroup();
@@ -57,14 +61,12 @@ var GPV = (function (gpv) {
       }
     });
 
-    // ==== this function Export  data  ====
     $("#cmdExportMarkup").on("click", function () {
       if (!$(this).hasClass("Disabled")) {
         window.location.href = "ExportMarkup.ashx?app=" + appState.Application + "&group=" + appState.MarkupGroups[0];
       }
     });
 
-    //  ====  When click New button other three button (Export , Delete , Zoom to) Enable ====
     var $cmdNewMarkup = $("#cmdNewMarkup").on("click", function () {
       if (!$(this).hasClass("Disabled")) {
         createMarkupGroup();
@@ -120,16 +122,16 @@ var GPV = (function (gpv) {
 
     var $tboMarkupTitle = $("#tboMarkupTitle").on("keydown", function (e) {
       if (e.keyCode == 13) {
-        UpdateMarkupGroupTitleAndDetails();
+        updateMarkupGroupTitleAndDetails();
       }
-    }).on("blur", UpdateMarkupGroupTitleAndDetails);
+    }).on("blur", updateMarkupGroupTitleAndDetails);
 
     // ====  For detail data updating    ==== 
     var $tboMarkupDetails = $("#tboMarkupDetails").on("keydown", function (e) {
       if (e.keyCode == 13) {
-        UpdateMarkupGroupTitleAndDetails();
+        updateMarkupGroupTitleAndDetails();
       }
-    }).on("blur", UpdateMarkupGroupTitleAndDetails);
+    }).on("blur", updateMarkupGroupTitleAndDetails);
 
     // ===for drop down selection in Markup tool Panel ==== 
     $(".dropdown .imgflag").addClass("flagvisibility");
@@ -183,7 +185,6 @@ var GPV = (function (gpv) {
 
 
 
-    // ==== this is for markup tool functionallity
     $("#optColorPicker,#optPaintBucket").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "point" } });
     });
@@ -213,21 +214,14 @@ var GPV = (function (gpv) {
     });
 
     $("#optDrawLength").on("click", function () {
-
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } }, doubleClickZoom: false });
     });
 
-    var $optDrawLine = document.getElementById("optDrawLine");
     $("#optDrawLine").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } }, doubleClickZoom: false });
     });
-
-    function DrawLineOpen() {
-      var c = getMarkupColor();
-      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } }, doubleClickZoom: false });
-    }
 
     $("#optDrawPolygon").on("click", function () {
       var c = getMarkupColor();
@@ -235,7 +229,6 @@ var GPV = (function (gpv) {
     });
 
     // =====  private functions  =====
-
 
     function addMarkup(e, option) {
       if (!isValid(e.shape)) {
@@ -269,6 +262,7 @@ var GPV = (function (gpv) {
       else {
         data.m = "AddMarkup";
         data.id = appState.MarkupGroups[0];
+
         post({
           data: data,
           success: function (result) {
@@ -378,11 +372,10 @@ var GPV = (function (gpv) {
         }
 
         $container.find(".Toggleable").toggleClass("Disabled", !enable);
-        $tboMarkupTitle.add("#tblMarkupText").prop("disabled", !enable);
+        $tboMarkupTitle.add("#tboMarkupText").prop("disabled", !enable);
       }
     }
 
-    // ==== for markup data fill in table ====
     function fillGrid() {
       if (!appState.MarkupCategory) {
         $grdMarkup.dataGrid("empty");
@@ -609,9 +602,11 @@ var GPV = (function (gpv) {
       $tboMarkupTitle.val(markupTitle);
       $tboMarkupDetails.val(markupDetails);
       enableControls();
-      $("#cmdExportMarkup").removeClass("btnControlLock");  // select any row from table , ExportMarkup button enable
-      $("#cmdDeleteMarkup").removeClass("btnControlLock");  // select any row from table , DeleteMarkup button enable
-      $("#cmdZoomToMarkup").removeClass("btnControlLock");  // select any row from table , ZoomTobutton enable
+
+      $("#cmdExportMarkup").removeClass("btnControlLock");
+      $("#cmdDeleteMarkup").removeClass("btnControlLock");
+      $("#cmdZoomToMarkup").removeClass("btnControlLock");
+
       if (numGroups) {
         zoomToMarkupGroup();
       }
@@ -645,12 +640,15 @@ var GPV = (function (gpv) {
 
     function shapeDrawing(e) {
       var currentTool = $MapTool.filter(".Selected").attr("id");
+
       if (currentTool === 'optDrawLength' || currentTool === 'optDrawArea') {
         var units = gpv.settings.measureUnits;
         var inFeet = units == "feet" || units == "both";
         var inMeters = units == "meters" || units == "both";
         var convert = 1 / (gpv.settings.measureCrsUnits == "feet" ? 1 : metersPerFoot);
+
         var latlngs = currentTool === 'optDrawLength' ? e.shape.getLatLngs() : e.shape.getLatLngs()[0];
+
         var points = $.map(latlngs, function (latlng) {
           return measureCrs.project(latlng);
         });
@@ -658,19 +656,25 @@ var GPV = (function (gpv) {
         if (measureText) {
           map.removeLayer(measureText);
         }
+
         var value = [];
         var i, j;
+
         if (currentTool === 'optDrawLength') {
           var length = getLength(points);
+
           if (length > 0) {
             length *= convert;
+
             if (inFeet) {
               value.push(length < feetPerMile ? Math.round(length) + " ft" : (length / feetPerMile).toFixed(1) + " mi");
             }
+
             if (inMeters) {
               length *= metersPerFoot;
               value.push(length < 1000 ? Math.round(length) + " m" : (length / 1000).toFixed(1) + " km");
             }
+
             measureText = L.text({
               latlng: latlngs[latlngs.length - 1],
               className: "MeasureText",
@@ -685,17 +689,21 @@ var GPV = (function (gpv) {
           if (ca.area > 0) {
             var area = ca.area * convert * convert;
             var acres = area / squareFeetPerAcre;
+
             if (inFeet) {
               var squareMile = feetPerMile * feetPerMile;
               value.push(area <= squareMile ? Math.round(area) + " sq ft" : (area / squareMile).toFixed(2) + " sq mi");
             }
+
             if (inMeters) {
               area *= metersPerFoot * metersPerFoot;
               value.push(area <= 100000 ? Math.round(area) + " sq m" : (area / 1000000).toFixed(2) + " sq km");
             }
+
             if (inFeet) {
               value.push(acres.toFixed(2) + " acres");
             }
+
             measureText = L.text({
               latlng: measureCrs.unproject(ca.centroid),
               className: "MeasureText " + (inFeet ? "Area3" : "Area2"),
@@ -709,9 +717,11 @@ var GPV = (function (gpv) {
 
     function toWkt(shape) {
       var points;
+
       if (shape instanceof L.Text) {
         shape = shape.options.latlng;
       }
+
       if (shape instanceof L.Polyline) {
         if (shape instanceof L.Polygon) {
           points = projectLatLngs(shape.getLatLngs()[0]);
@@ -724,19 +734,22 @@ var GPV = (function (gpv) {
         }
       }
       else if (shape instanceof L.LatLng) {
-        return "POINT(" + toWktCoordinates([map.options.crs.project(shape)]) + ")";
+        return "POINT(" + toWktCoordinates([ map.options.crs.project(shape) ]) + ")";
       }
       else if (shape instanceof L.Circle) {
         var sweepAngle = 3;
         var segments = 360 / sweepAngle;
+
         sweepAngle *= Math.PI / 180;
         var cos = Math.cos(sweepAngle);
         var sin = Math.sin(sweepAngle);
+
         var center = map.options.crs.project(shape.getLatLng());
         var theta = Math.PI * 0.5 - 2 * Math.atan(Math.pow(Math.E, -center.y / 6378137));
         var dx = 0;
         var dy = shape.getRadius() / theta;
-        points = [L.point(center.x + dx, center.y + dy)];
+        points = [ L.point(center.x + dx, center.y + dy) ];
+
         for (var i = 0; i < segments - 1; ++i) {
           var ndx = dx * cos + dy * sin;
           var ndy = dy * cos - dx * sin;
@@ -744,6 +757,7 @@ var GPV = (function (gpv) {
           dy = ndy;
           points.push(L.point(center.x + dx, center.y + dy));
         }
+
         points.push(points[0]);
         return "POLYGON((" + toWktCoordinates(points) + "))";
       }
@@ -753,6 +767,7 @@ var GPV = (function (gpv) {
       var prec = Math.log(map.getProjectedPixelSize()) / Math.LN10;
       prec = prec >= 0 ? 0 : 0 - Math.floor(prec);
       var c = [];
+
       for (var i = 0; i < points.length; ++i) {
         c.push(points[i].x.toFixed(prec) + " " + points[i].y.toFixed(prec));
       }
@@ -760,19 +775,18 @@ var GPV = (function (gpv) {
       return c.join(",");
     }
 
-    // ==== for updating markup data ====
-
-    function UpdateMarkupGroupTitleAndDetails() {
+    function updateMarkupGroupTitleAndDetails() {
       if (appState.MarkupGroups.length == 1) {
         var id = appState.MarkupGroups[0];
         var title = $tboMarkupTitle.val();
         var details = $tboMarkupDetails.val();
+
         post({
           data: {
             m: "UpdateMarkupGroupTitleAndDetails",
             id: id,
             title: title,
-            details: details,
+            details: details
           },
           success: function (result) {
             if (result) {
@@ -808,8 +822,7 @@ var GPV = (function (gpv) {
     // =====  public interface  =====
 
     gpv.markupPanel = {
-      setMap: setMap,
-      DrawLineOpen: DrawLineOpen
+      setMap: setMap
     };
 
     // =====  finish initialization  =====

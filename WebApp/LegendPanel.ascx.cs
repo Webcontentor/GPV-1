@@ -1,4 +1,4 @@
-﻿  ﻿//  Copyright 2016 Applied Geographics, Inc.
+﻿  //  Copyright 2016 Applied Geographics, Inc.
   //
   //  Licensed under the Apache License, Version 2.0 (the "License");
   //  you may not use this file except in compliance with the License.
@@ -38,7 +38,6 @@ public partial class LegendPanel : System.Web.UI.UserControl
     int tileWidth = AppContext.AppSettings.SwatchTileWidth;
     int tileHeight = AppContext.AppSettings.SwatchTileHeight;
     bool expanded = AppContext.AppSettings.LegendExpanded;
-    bool collapsed = AppContext.AppSettings.LegendCollapsed;
 
     HtmlGenericControl legendEntry = new HtmlGenericControl("div");
     container.Controls.Add(legendEntry);
@@ -50,7 +49,6 @@ public partial class LegendPanel : System.Web.UI.UserControl
 
     HtmlGenericControl expander = new HtmlGenericControl("span");
     legendHeader.Controls.Add(expander);
-    // expander.Attributes["class"] = "LegendExpander " + (collapsed ? "Collapsed" : "Expanded");
 
     if (layerProperties[i].CheckMode != CheckMode.None)
     {
@@ -61,41 +59,27 @@ public partial class LegendPanel : System.Web.UI.UserControl
       if (layerProperties[i].CheckMode != CheckMode.Empty)
       {
         HtmlControl check = null;
+        bool itemChecked = false;
 
         if (layerProperties[i].IsExclusive)
         {
           HtmlInputRadioButton radio = new HtmlInputRadioButton();
-          radio.Checked = layerProperties[i].CheckMode == CheckMode.Checked;
+          radio.Checked = itemChecked = layerProperties[i].CheckMode == CheckMode.Checked;
           radio.Name = String.Format("{0}_{1}", mapTabId, layer.Parent.ID);
           check = radio;
-          if (radio.Checked == true)
-          {
-            expander.Attributes["class"] = "LegendExpander Expanded";
-          }
-          else
-          {
-            expander.Attributes["class"] = "LegendExpander Collapsed";
-          }
         }
         else
         {
           HtmlInputCheckBox checkBox = new HtmlInputCheckBox();
-          checkBox.Checked = layerProperties[i].CheckMode == CheckMode.Checked;
+          checkBox.Checked = itemChecked = layerProperties[i].CheckMode == CheckMode.Checked;
           check = checkBox;
-          if (checkBox.Checked == true)
-          {
-            expander.Attributes["class"] = "LegendExpander Expanded";
-          }
-          else
-          {
-            expander.Attributes["class"] = "LegendExpander Collapsed";
-          }
-
         }
 
         visibility.Controls.Add(check);
         check.Attributes["class"] = "LegendCheck";
         check.Attributes["data-layer"] = layerProperties[i].Tag;
+        expanded = expanded && itemChecked;
+        expander.Attributes["class"] = "LegendExpander " + (expanded ? "Expanded" : "Collapsed");
       }
     }
 
@@ -119,15 +103,7 @@ public partial class LegendPanel : System.Web.UI.UserControl
 
     HtmlGenericControl content = new HtmlGenericControl("div");
     content.Attributes["class"] = "LegendContent";
-    if (expander.Attributes["class"] == "LegendExpander Collapsed")
-    {
-      content.Style["display"] = "none";// collapsed ? "none" : "block";
-    }
-    else
-    {
-      content.Style["display"] = "block";// expanded ? "block" : "none";
-    }
-
+    content.Style["display"] = expanded ? "block" : "none";
 
     switch (layer.Type)
     {
@@ -300,8 +276,26 @@ public partial class LegendPanel : System.Web.UI.UserControl
     }
   }
 
+  private void CreateMapThemes(Configuration.ApplicationRow application, AppState _appState)
+  {
+    foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
+    {
+      HtmlGenericControl li = new HtmlGenericControl("li");
+      phlMapTheme.Controls.Add(li);
+      li.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
+      li.Attributes["data-maptab"] = appMapTabRow.MapTabID;
+
+      if (_appState.MapTab == appMapTabRow.MapTabID)
+      {
+        selectedTheme.Text = appMapTabRow.MapTabRow.DisplayName;
+      }
+    }
+  }
+
   public void Initialize(Configuration config, AppState appState, Configuration.ApplicationRow application)
   {
+    CreateMapThemes(application, appState);
+
     foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
     {
       Configuration.MapTabRow mapTabRow = appMapTabRow.MapTabRow;
@@ -324,24 +318,6 @@ public partial class LegendPanel : System.Web.UI.UserControl
       CheckMode = checkMode;
       IsExclusive = isExclusive;
       MetaDataUrl = metaDataUrl;
-    }
-  }
-
-  public void CreateMapThemes(Configuration.ApplicationRow application, AppState _appState)
-  {
-    // add map tabs
-
-    foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
-    {
-      HtmlGenericControl li = new HtmlGenericControl("li");
-      phlMapTheme.Controls.Add(li);
-      li.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
-      li.Attributes["data-maptab"] = appMapTabRow.MapTabID;
-
-      if (_appState.MapTab == appMapTabRow.MapTabID)
-      {
-        selectedTheme.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
-      }
     }
   }
 }

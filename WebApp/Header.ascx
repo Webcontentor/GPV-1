@@ -15,5 +15,4 @@
 --%>
 
 <%@ Control Language="C#" ClassName="Header" %>
-  <div class="logo">
-  </div>
+

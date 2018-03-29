@@ -39,7 +39,7 @@ limitations under the License.
   <div class="frm_row">
     <div id="pnlMapThemes" class="MapMenu customMaps">
       <button class="frmSelect" type="button" id="btnMapTheme" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Theme">
-        <span id="selectedTheme" runat="server"></span>
+        <gpv:Span id="selectedTheme" runat="server"></gpv:Span>
       </button>
       <ul id="selectMapTheme" class="dropdown-menu" aria-labelledby="btnMapTheme">
         <asp:PlaceHolder ID="phlMapTheme" runat="server"></asp:PlaceHolder>

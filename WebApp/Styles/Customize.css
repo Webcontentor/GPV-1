@@ -37,23 +37,26 @@
 
 /* height of the header */
 
-#pnlHeader {
+#pnlHeader
+{
   min-height: 50px;
   height: 50px;
 }
 
 /* top and bottom of the main content area (map and function panels); */
 /* top and bottom of the main content area should match the hight of the header */
-/* and the footer respecitvely */
+/* and the footer respectively */
 
-#pnlContent {
+#pnlContent 
+{
   top: 50px;
   bottom: 20px;
 }
 
 /* height of the footer */
 
-#pnlFooter {
+#pnlFooter
+{
   height: 20px;
   text-align: center;
 }
@@ -62,7 +65,8 @@
 /* pnlContent above. Not doing so could cause the interface to   */
 /* layout incorrectly.                                           */
 
-#pnlBody {
+#pnlBody
+{
   min-height: 526px;
 }
 
@@ -74,7 +78,8 @@
 
 /* default background color of the header and footer */
 
-#pnlHeader {
+#pnlHeader
+{
   background-color: #3c8dbc;
 }
 
@@ -84,180 +89,210 @@
 
 /* default color of the hamburger menu icon and the help question icon */
 
-#cmdMenu span, #cmdHelp span, #cmdEmail i {
+#cmdMenu span, #cmdHelp span, #cmdEmail i
+{
   color: #ffffff;
 }
+
 #cmdMenu span:hover{
   color: #ffb74d;
 }
 
 /* default color of the details panel three dot icon */
 
-#cmdShowDetails {
+#cmdShowDetails
+{
   color: #fff;
 }
 
 /* text color of links (external pages and GPV commands) */
 
-a, .CommandLink {
+a, .CommandLink
+{
   color: #ffffff;
 }
 
 /* text color of the GPV version text below the map */
 
-.VersionText {
+.VersionText
+{
   color: #A0A685;
   margin-left: 10px;
 }
 
 /* text color of the AppGeo link below the map */
 
-a.VersionText {
+a.VersionText
+{
   color: #999FBF;
 }
 
 /* background and text colors of unselected tabs */
 
-.Tab.Normal, a.Tab.Normal {
+.Tab.Normal, a.Tab.Normal
+{
   background-color: #dee0d5;
   color: #A0A0A0;
 }
 
 /* background and text colors of tabs as you mouse over them */
 
-.Tab.Normal:hover, a.Tab.Normal:hover {
+.Tab.Normal:hover, a.Tab.Normal:hover
+{
   background-color: #F5F7EB;
   color: #808080;
 }
 
 /* text color of selected tabs */
 
-.Tab.Selected, a.Tab.Selected {
+.Tab.Selected, a.Tab.Selected
+{
   color: Black;
 }
 
 /* background color of panels, selected tabs and color selectors */
 
-.MainPanel, .Tab.Selected, .ColorSelector {
+.MainPanel, .Tab.Selected, .ColorSelector
+{
   background-color: #FFFFFF;
 }
 
 /* border color of panels, tabs and color selectors */
 
-.Tab, .ColorSelector {
+.Tab, .ColorSelector
+{
   border-left: solid 1px #b9b9b9;
   border-top: solid 1px #b9b9b9;
   border-right: solid 1px #b9b9b9;
 }
 
-.ColorSelector {
+.ColorSelector
+{
   border-bottom: solid 1px #b9b9b9;
 }
 
 /* border color of text boxes and drop down lists */
 
-.Input {
+.Input
+{
   border: solid 1px #AFB2A1;
 }
 
 /* background color for alternating rows in data grids (the base color is always white)
  * this is for the alternating rows for data in the search and selection function panels */
 
-.DataGridRowAlternate {
+.DataGridRowAlternate
+{
   background-color: transparent;
 }
 
 /* background and text color of headers in right data panel */
 
-.DataList .RowSetHeader {
+.DataList .RowSetHeader
+{
   background-color: #444f56;
   color: #f3f7d9;
 }
 
 /* background and text color of subheaders in data panel */
 
-.DataList .RowSetSubheader {
+.DataList .RowSetSubheader
+{
   background-color: transparent;
   color: #f3f7d9;
 }
 
 /* color for function menu left boarder */
 
-.Menu {
+.Menu
+{
   border-left: none;
 }
 
 /* link text color for left menu items */
 
-.MenuItem {
+.MenuItem
+{
   color: #fff;
 }
 
-.MenuItem:hover {
+.MenuItem:hover
+{
   color: #fff;
 }
 
-.active .MenuItem{
+.active .MenuItem
+{
   color: #fff;
 }
 
 /* text color for help page menu item */
-#listContents .MenuItem {
+
+#listContents .MenuItem
+{
   color: #212121;
 }
 
 /* left border of Menu */
-#pnlTableofContents .Menu {
+
+#pnlTableofContents .Menu
+{
   border-left: solid 4px #3c8dbc;
 }
 
 /* left border of Menu */
-#pnlHelpContent .MenuItem {
+
+#pnlHelpContent .MenuItem
+{
   font-size: 24px;
   color: #212121;
 }
 
-/* function panel background color and right border color; should match the .FunctionHeader background color below */
+/* function panel background color and right border color */
 
-#pnlFunctionSidebar {
+#pnlFunction {
+    background: rgba(23,41,54,.9);
+}
+
+#pnlFunctionSidebar
+{
   background-color: #172936;
   border-right: none;
 }
 
-/* for change of the color of SidePanel  */
-
-#pnlFunction {
-  background: rgba(23,41,54,.9);
-}
-
 /* function panel background color, text color and left border  */
 
-.FunctionHeader {
+.FunctionHeader
+{
   background-color: #172936;
   border-left: none;
 }
 
-.FunctionHeader, .FunctionHeader span a {
+.FunctionHeader, .FunctionHeader span a
+{
   color : #ffffff;
 }
 
 /* sets the color of the < and > icons used to close the function and data panels 
  * currently set to match the font color in the function header */
 
-.FunctionExit, .DataExit {
+.FunctionExit, .DataExit
+{
   color: #FFFFFF;
 }
 
 /* data panel header background color and text color  */
 
-.DataHeader {
+.DataHeader
+{
   background-color: #172936;
   color: #fff;
 }
 
 /* font for function panel menu items and headers on the function and data panels */
 
-.MenuItem {
+.MenuItem
+{
   font-family: Open Sans, sans-serif;
   font-size: 13px;
 }
@@ -269,31 +304,36 @@ a.VersionText {
 
 /* color of the labels used for various options in the Share panel */
 
-.FunctionLabel {
+.FunctionLabel
+{
   color: #fff;
   font-size: 15px;
 }
 
 /* sets the color in the map tool menu for when hovering over an active map tool item */
 
-li.MapTool:hover, #selectMapTheme li:hover, #selectMapLevel li:hover {
+li.MapTool:hover, #selectMapTheme li:hover, #selectMapLevel li:hover
+{
   background-color: #1e90ff;
 }
 
 /* sets the height and width for the overview map popout in the bottom right corner of the map */
 
-.overviewMap {
+.overviewMap
+{
   height: 250px;
   width: 175px;
 }
 
 /* color of the overview map locator box that shows current extent */
 
-#locatorBox {
+#locatorBox
+{
   border: solid 2px #FF0000;
 }
 
-#pnlSearchGrid, #pnlQueryGrid {
+#pnlSearchGrid, #pnlQueryGrid
+{
   color: #f4f7f7;
 }
 

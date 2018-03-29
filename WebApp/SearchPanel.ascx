@@ -1,9 +1,12 @@
 ﻿<%-- 
 Copyright 2012 Applied Geographics, Inc.
+
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
+
 http://www.apache.org/licenses/LICENSE-2.0
+
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,8 +17,7 @@ limitations under the License.
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="SearchPanel.ascx.cs" Inherits="SearchPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
-
-<div class="topHead FunctionHeader"> <%--FunctionHeader class for changing Header Background Color and Font color--%>
+<div class="topHead FunctionHeader">
   <div class="inner">
       <span class="topLftTxt ">
         <span class="topTxt">Search</span>
@@ -28,9 +30,9 @@ limitations under the License.
       </span>
     </div>
   </div>
-<div id="pnlSearchFields" class="customScroll ">
-  <div id="pnlSearchInputField" class="frm_box">
-    <div class="frm_row noTopMargin customSearch">
+<div id="pnlSearchFields" class=" ">
+  <div id="pnlSearchInputField" class="frm_box customScroll">
+    <div class="frm_row noTopMargin customSearch ">
       <gpv:Select ID="ddlSearches" runat="server" CssClass="frmSelect" ToolTip="Choose a search to perform" />
     </div>
     <gpv:Div ID="pnlSearchScroll" runat="server" class="Panel"></gpv:Div>

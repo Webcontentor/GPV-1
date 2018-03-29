@@ -23,7 +23,7 @@ using System.Web.UI.HtmlControls;
 
 public partial class MarkupPanel : System.Web.UI.UserControl
 {
-  public void Initialize(Configuration config, AppState appState, Configuration.ApplicationRow application, Dictionary<String, String> launchParams)
+  public void Initialize(Configuration config, AppState appState, Configuration.ApplicationRow application)
   {
     using (OleDbConnection connection = AppContext.GetDatabaseConnection())
     {

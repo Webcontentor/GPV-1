@@ -21,7 +21,7 @@ var GPV = (function (gpv) {
     // For BaseMaps 
 
     $tileContainer.find(".RadioCheck").on("click", function () {
-      if (previousChecked != null) {
+      if (previousChecked !== null) {
         gpv.viewer.toggleTileGroup(previousChecked, false);
       }
       var $this = $(this);

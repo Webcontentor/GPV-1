@@ -21,6 +21,7 @@ var GPV = (function (gpv) {
     var appState = gpv.appState;
     var selection = gpv.selection;
     var service = "Services/SelectionPanel.ashx";
+
     var action = {
       select: 0,
       findAllWithin: 1,
@@ -37,6 +38,7 @@ var GPV = (function (gpv) {
     // =====  controls  =====
 
     $("#cmdClearSelection").on("click", clearSelection);
+
     var $cmdDataPrint = $("#cmdDataPrint").on("click", printData);
     var $cmdMobDataPrint = $("#cmdMobDataPrint").on("click", printData);
 
@@ -58,6 +60,7 @@ var GPV = (function (gpv) {
     var $ddlQuery = $("#ddlQuery").on("change", queryChanged);
     var $ddlSelectionLayer = $("#ddlSelectionLayer").on("change", selectionLayerChanged);
     var $ddlTargetLayer = $("#ddlTargetLayer").on("change", targetLayerChanged);
+
     var $grdQuery = $("#grdQuery").dataGrid({
       rowClass: "DataGridRow",
       alternateClass: "DataGridRowAlternate",
@@ -83,7 +86,6 @@ var GPV = (function (gpv) {
       }
     });
 
-    
     var $ddlDataTheme = $("#ddlDataTheme").on("change", function () {
       var dataTab = $("#ddlDataTheme :selected").attr("data-datatab");
       appState.DataTab = dataTab;
@@ -107,6 +109,7 @@ var GPV = (function (gpv) {
     function actionChanged(e) {
       var previous = appState.Action;
       appState.update({ Action: parseInt($ddlAction.val(), 10) });
+
       if (!e) {
         if (appState.Action == action.select) {
           appState.update({ SelectionIds: [] });
@@ -115,6 +118,7 @@ var GPV = (function (gpv) {
       else {
         var mapTab = config.mapTab[appState.MapTab];
         var preserveSelection = gpv.settings.preserveOnActionChange == "selection";
+
         if (preserveSelection && previous > action.select && appState.Action == action.select && hasId(mapTab.target, appState.SelectionLayer)) {
           appState.update({
             TargetLayer: appState.SelectionLayer,
@@ -138,9 +142,12 @@ var GPV = (function (gpv) {
           if (appState.Action == action.select) {
             appState.update({ SelectionIds: [] });
           }
+
           fillSelectionLayer();
         }
+
         fillProximity();
+
         if (preserveSelection) {
           selection.update();
         }
@@ -150,12 +157,15 @@ var GPV = (function (gpv) {
     function addressCompare(a, b) {
       a = addressParse(a);
       b = addressParse(b);
+
       for (var i = 0; i < 3; ++i) {
         var r = compare(a[i], b[i]);
+
         if (r != 0) {
           return r;
         }
       }
+
       return 0;
     }
 
@@ -163,6 +173,7 @@ var GPV = (function (gpv) {
       var parts = s.split(" ");
       var first = parts.shift();
       var n = parseInt(first, 10);
+
       if (isNaN(n)) {
         return [s, 0, ""];
       }
@@ -190,6 +201,7 @@ var GPV = (function (gpv) {
     function exportData($target, url) {
       if (!$target.hasClass("Disabled")) {
         var dataIds = $.map($grdQuery.dataGrid("getIds"), function (v) { return v.d; });
+
         $("#hdnExportLayer").val(appState.TargetLayer);
         $("#hdnExportIds").val(dataIds.join(","));
         $("#frmExportData").prop("action", url).submit();
@@ -209,7 +221,9 @@ var GPV = (function (gpv) {
       else {
         var mapTab = config.mapTab[appState.MapTab];
         var layer = config.layer[appState.TargetLayer];
+
         list.push({ id: action.select, name: "Select" });
+
         if (mapTab.selection.length) {
           if (layer.proximity.length) {
             list.push({ id: action.findAllWithin, name: "Find all" });
@@ -220,7 +234,9 @@ var GPV = (function (gpv) {
           });
         }
       }
+
       var changed = gpv.loadOptions($ddlAction, list);
+
       if (initializing) {
         syncAppState($ddlAction, "Action");
       }
@@ -252,9 +268,9 @@ var GPV = (function (gpv) {
             $pnlDataList.empty().append(html);
             $pnlMobDataList.empty().append(html);
             $cmdDataPrint.removeClass("Disabled").data("printdata", [
-          "datatab=", encodeURIComponent(appState.DataTab),
-          "&id=", encodeURIComponent(appState.ActiveDataId),
-          "&print=1"
+              "datatab=", encodeURIComponent(appState.DataTab),
+              "&id=", encodeURIComponent(appState.ActiveDataId),
+              "&print=1"
             ].join(""));
             $cmdMobDataPrint.removeClass("Disabled").data("printdata", [
               "datatab=", encodeURIComponent(appState.DataTab),
@@ -281,8 +297,7 @@ var GPV = (function (gpv) {
               $(".MenuItem").removeClass("active");
               $("#tabMobDetails").addClass("active");
             }
-          }
-           ,
+          },
           error: function (xhr, status, message) {
             alert(message);
           }
@@ -294,48 +309,57 @@ var GPV = (function (gpv) {
       var isFindAll = appState.TargetLayer && appState.Action == action.findAllWithin;
       var isFindNear = appState.TargetLayer && action.findNearest1 <= appState.Action && appState.Action <= action.findNearest5;
       var list = isFindAll ? config.layer[appState.TargetLayer].proximity : isFindNear ? [{ id: "", name: "nearest to the selected" }] : [];
+
       var changed = gpv.loadOptions($ddlProximity, list);
+
       if (initializing) {
         syncAppState($ddlProximity, "Proximity");
       }
       else if (changed) {
         proximityChanged();
       }
+
       return changed;
     }
 
     function fillQuery(initializing) {
       var list = appState.TargetLayer ? config.layer[appState.TargetLayer].query : [];
       var changed = gpv.loadOptions($ddlQuery, list);
+
       if (initializing) {
         syncAppState($ddlQuery, "Query");
       }
       else if (changed) {
         queryChanged();
       }
+
       return changed;
     }
 
     function fillSelectionLayer(initializing) {
       var list = appState.Action == action.select || !appState.TargetLayer ? [] : config.mapTab[appState.MapTab].selection;
       var changed = gpv.loadOptions($ddlSelectionLayer, list);
+
       if (initializing) {
         syncAppState($ddlSelectionLayer, "SelectionLayer");
       }
       else if (changed) {
         selectionLayerChanged();
       }
+
       return changed;
     }
 
     function fillTargetLayer(initializing) {
       var changed = gpv.loadOptions($ddlTargetLayer, config.mapTab[appState.MapTab].target) && !initializing;
+
       if (initializing) {
         syncAppState($ddlTargetLayer, "TargetLayer");
       }
       else if (changed) {
         targetLayerChanged();
       }
+
       return changed;
     }
 
@@ -368,10 +392,12 @@ var GPV = (function (gpv) {
         setDataTabs();
         fillDataList();
       }
+
       changed = fillAction() || changed;
       changed = fillProximity() || changed;
       changed = fillSelectionLayer() || changed;
       changed = fillQuery() || changed;
+
       if (changed) {
         selection.update();
       }
@@ -380,6 +406,7 @@ var GPV = (function (gpv) {
     function parseQuery(s) {
       var q = {};
       s.replace(/([^?=&]+)(=([^&]*))?/g, function (v0, v1, v2, v3) { q[v1] = v3 || null; });
+
       $.each(["layerson", "layersoff", "targetids", "targetparams", "selectionids"], function (i, v) {
         if (q.hasOwnProperty(v)) {
           q[v] = q[v] ? q[v].split(",") : [];
@@ -396,6 +423,7 @@ var GPV = (function (gpv) {
 
     function printData() {
       if (!$cmdDataPrint.hasClass("Disabled")) {
+        event.stopPropagation();
         var data = $cmdDataPrint.data("printdata");
         var windowName = "identify" + (new Date()).getTime();
         var features = "width=700,height=500,menubar=no,titlebar=no,toolbar=no,status=no,scrollbars=no,location=no,resizable=no";
@@ -403,6 +431,7 @@ var GPV = (function (gpv) {
       }
 
       if (!$cmdMobDataPrint.hasClass("Disabled")) {
+        event.stopPropagation();
         var data = $cmdMobDataPrint.data("printdata");
         var windowName = "identify" + (new Date()).getTime();
         var features = "width=700,height=500,menubar=no,titlebar=no,toolbar=no,status=no,scrollbars=no,location=no,resizable=no";
@@ -540,6 +569,7 @@ var GPV = (function (gpv) {
               if ($("#pnlSelection").css("display") === "none") {
                 gpv.viewer.switchToPanel("Selection");
               }
+
               post({
                 data: {
                   m: "GetLayerProperties",
@@ -547,8 +577,8 @@ var GPV = (function (gpv) {
                 },
                 success: function (result) {
                   if (result) {
-                    $("#cmdMailingLabels").toggleClass("Disabled", result.supportsMailingLabels);
-                    $("#cmdExportData").toggleClass("Disabled", result.supportsExportData);
+                    $("#cmdMailingLabels").removeClass("Disabled");
+                    $("#cmdExportData").removeClass("Disabled");
                   }
                 }
               });
