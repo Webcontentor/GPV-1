@@ -65,7 +65,7 @@ limitations under the License.
     <div class="data_box topMargin  customScroll" id="pnlQueryGrid">
       <table id="grdQuery" class="dataTable"></table>
     </div>
-    <div id="pnlQueryCommand" class="frm_row topMargin">
+    <div id="pnlQueryCommand topMargin" class="frm_row ">
       <span id="labSelectionCount" class="floatLeft">None selected</span>
       <button id="cmdMailingLabels" class="Disabled btn frmBtn mailingLblBtn" title="Mailing Labels"><span class="lbl"></span><span class="txt">Mailing Labels</span></button>
       <button id="cmdExportData" class="Disabled btn frmBtn spreadsheetBtn" title="Spreadsheet"><span class="lbl"></span><span class="txt">Spreadsheet</span></button>

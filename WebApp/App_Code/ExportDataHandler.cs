@@ -32,7 +32,7 @@ public class ExportDataHandler : IHttpHandler
 
     string layer = context.Request.Form["layer"];
     string ids = context.Request.Form["ids"];
-
+    var tbl =  context.Request.Form.GetValues("grdQuery");
     WriteData(layer, ids);
   }
 

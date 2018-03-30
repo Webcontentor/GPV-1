@@ -227,7 +227,8 @@
   width: 100%;
   border: none;
   overflow-x: auto;
-  height: 206px;
+  /*height: 206px;*/
+  height: calc(100vh - 459px);
   overflow-y: auto;
 }
 
@@ -246,11 +247,16 @@
 #pnlSearchFields .mCSB_container {
   padding-right: 22px;
 }
-
+#pnlSearchFields #pnlSearchGrid .mCSB_container{ 
+  padding-right: 16px;
+  box-sizing: content-box;
+}
 #pnlSearchFields .mCSB_container_wrapper{
   margin-right: 18px;
   /*margin-bottom: 30px;*/
   padding-right: 20px;
+  /*left: -18px;*/
+  width: 93%;
 }
 
 #mCSB_1_scrollbar_vertical {

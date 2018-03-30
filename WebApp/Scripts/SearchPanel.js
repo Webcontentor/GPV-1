@@ -33,7 +33,6 @@ var GPV = (function (gpv) {
     $(".Number,.NumberRange").numericInput();
     $(".Date,.DateRange").dateInput().datepicker({ showAnim: "slideDown", changeMonth: true, changeYear: true });
     $(".SearchInputField:has(select)").addClass('customSearch');
-
     var $grdSearch = $("#grdSearch").dataGrid({
       multiSelect: true,
       rowClass: "DataGridRow",
@@ -74,7 +73,9 @@ var GPV = (function (gpv) {
       $grdSearch.dataGrid("empty");
       $cmdShowOnMap.addClass("Disabled");
       $cmdShowAllOnMap.addClass("Disabled");
+      $("#pnlSearchGrid").attr("style", "display:none");
     }
+
 
     function fillSearches() {
       var changed = gpv.loadOptions($ddlSearch, config.mapTab[appState.MapTab].search);
@@ -105,7 +106,7 @@ var GPV = (function (gpv) {
             $grdSearch.dataGrid("load", result);
             $labSearchCount.text((result.rows.length == 0 ? "None" : result.rows.length) + " found");
             $cmdShowAllOnMap.toggleClass("Disabled", result.rows.length == 0);
-
+            $("#pnlSearchGrid").attr("style", "display:block");
             if (!initializing && gpv.settings.searchAutoSelect && result.rows.length == 1) {
               showOnMap();
             }
